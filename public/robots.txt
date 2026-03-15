@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Allow: /methodology
+Sitemap: https://agentguard.ai/sitemap.xml

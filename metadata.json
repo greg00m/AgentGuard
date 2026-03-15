@@ -1,0 +1,5 @@
+{
+  "name": "AgentGuard",
+  "description": "AI Poisoning & Prompt Injection Detector. Protect AI agents from malicious instructions. No data collected. No data shared. Not a replacement for endpoint protection.",
+  "requestFramePermissions": []
+}
