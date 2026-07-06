@@ -2,6 +2,27 @@
 
 This guide provides the necessary information for submitting AgentGuard to major app stores (Apple App Store, Google Play, Microsoft Store).
 
+## 0. App Icon & Native Platform Setup
+
+The app icon/logo lives in two forms:
+*   **Web/PWA:** `public/favicon.ico`, `public/apple-touch-icon.png`, and `public/icons/*` are already wired up in `index.html` and `public/manifest.json`.
+*   **Native (iOS/Android) source:** `resources/icon.png` (1024x1024, no alpha) and `resources/splash.png` (2732x2732) are the master assets used to generate every native icon/splash size.
+
+To generate the native platforms and populate their icon/splash catalogs:
+```bash
+npx cap add ios
+npx cap add android
+npm install --save-dev @capacitor/assets   # requires network access to download prebuilt `sharp` binaries
+npx capacitor-assets generate
+npx cap sync
+```
+
+**Apple Privacy Manifest:** After running `npx cap add ios`, copy `PrivacyInfo.xcprivacy` (repo root) into `ios/App/App/PrivacyInfo.xcprivacy` and add it to the `App` target in Xcode (required by Apple for all new/updated App Store submissions). It declares the same "no tracking, app-functionality-only" data use described in section 1 below — review and adjust the `NSPrivacyAccessedAPITypes` entries if you add further native plugins.
+
+**Required Info.plist entries** (add via Xcode after `cap add ios`, in `ios/App/App/Info.plist`):
+*   `NSLocationWhenInUseUsageDescription` — the app optionally reads device location to ground Gemini's Google Maps search grounding for a scan; e.g. "AgentGuard uses your location to improve the accuracy of security grounding results for your scan."
+*   `NSFaceIDUsageDescription` — required because of the optional biometric-unlock feature; e.g. "AgentGuard uses Face ID to protect access to the app."
+
 ## 1. App Store Connect (Apple) - Privacy Nutrition Label
 
 **Data Collection:**
